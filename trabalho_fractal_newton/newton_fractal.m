@@ -7,8 +7,8 @@ f = @(x) x.^3 - 1;
 df = @(x) 3*x.^2;
 
 % Configura plot
-x = linspace(-1, 1, 300);
-y = linspace(-1, 1, 300);
+x = linspace(-2, 2, 1000);
+y = linspace(-2, 2, 1000);
 [X, Y] = meshgrid(x, y);
 Z = X + (1i * Y);
 
