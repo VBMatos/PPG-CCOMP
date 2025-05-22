@@ -1,36 +1,19 @@
-clc; clear; close all;
+function newton_fractal(f, df, width, height, x_min, x_max, y_min, y_max)
+  max_iter = 30;
+  tol = 1.0e-9;
 
-tol = 1.0e-9;
-maxiter = 10;
+  % Inicializa grid
+  x = linspace(x_min, x_max, width);
+  y = linspace(y_min, y_max, height);
+  [X, Y] = meshgrid(x, y);
+  z = X + 1i * Y;
 
-f = @(x) x.^3 - 1;
-df = @(x) 3*x.^2;
+  % Inicializa matriz
+  img = zeros(height, width);
 
-% Configura plot
-x = linspace(-2, 2, 1000);
-y = linspace(-2, 2, 1000);
-[X, Y] = meshgrid(x, y);
-Z = X + (1i * Y);
+  %Aplica método de newton
+  img = metodo_newton(max_iter, f, df, z, tol, img);
 
-% Initializa imagem
-img = zeros(size(Z));
-
-chute = 0;
-
-for i = 1:size(Z, 1)
-    for j = 1:size(Z, 2)
-      x0 = Z(i, j);
-
-      disp(['Chute inicial: x0 = ', num2str(x0)]);
-      [xn, iter] = newton(f, df, x0, tol, maxiter);
-
-      img(i, j) = xn; % Armazena a raíz
-    end;
+  %Exibe a imagem
+  plot_fractal(x, y, img);
 end
-
-% Exibe o plot
-imagesc(x, y, abs(img));
-colorbar();
-title('Fractal de Newton (z^3 - 1)');
-xlabel('Re(z)');
-ylabel('Im(z)');
